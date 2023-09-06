@@ -2,6 +2,7 @@ import User from "../model/User";
 import bcrypt, { hash } from 'bcrypt';
 import errorResponse from "../utils/errorResponse";
 import successResponse from "../utils/successResponse";
+import  Jwt  from "jsonwebtoken";
 
 
 
@@ -24,15 +25,8 @@ class UserController{
             successResponse(res,status,msg,data)
 
         }catch(error){
-        
-        if (error.code == 11000){
-            return errorResponse(res,403, `User already exist`)
-            
-            
-        } else{
-           return errorResponse(res,500,error)
-        }
-        }
+         return errorResponse(res,403, `User already exist`)
+             }
     }
 
     static async login(req,res){
@@ -50,7 +44,7 @@ class UserController{
 
         }else{
           //generate a token
-          const token=jwt.sign({role:user.role,email:user.email,firstName:user.firstName},process.env.SECRET_KEY,{expiresIn:"1d"})
+          const token=Jwt.sign({role:user.role,email:user.email,firstName:user.firstName},process.env.SECRET_KEY,{expiresIn:"1d"})
          return res.status(200).json({
           token:token,
           data:{
