@@ -15,26 +15,26 @@ class UserController {
           
         }
      
-        const hashPassword=bcrypt.hashSync(req.body.password,10)
+const hashPassword=bcrypt.hashSync(req.body.password,10)
 
-      const user = await User.create({firstName,lastName,email,password:hashPassword,role});
-     const status=201
+const user = await User.create({firstName,lastName,email,password:hashPassword,role});
+if(!user){
+  return errorResponse(res,401,`user not created`);
 
-     const msg=`user successfuly created`
-     const data=user
-     successResponse(res,status,msg,data)
-    } catch (error) {
-      
-        return errorResponse(res,403,error)
-       
-     
-    }
+}else{
+  return successResponse(res,201,`user successfuly created`, user);
+
+}
+}catch(error){
+  return errorResponse(res,403,error);
+}
   }
+
   static async login(req,res){
     //take data from body
     const {email,password}=req.body
     //verify if email exist
-    const user=await User.findOne({email})
+    const user=await User.findOne({email});
     if(!user){
       return errorResponse(res,401,`Invalid email or password`)
     }else{
@@ -44,15 +44,14 @@ class UserController {
         return errorResponse(res,401,`Invalid email or password`)
       }else{
         //generate a token
-        const token=jwt.sign({role:user.role,email:user.email,firstName:user.firstName},process.env.SECRET_KEY,{expiresIn:"1d"})
+        const token=jwt.sign({role:user.role,email:user.email,firstName:user.firstName},process.env.SECRET_KEY,{expiresIn:"1d"});
+  
 return res.status(200).json({
   token:token,
   data:{
-    email:user.email,
-    firstName:user.firstName,
-    role:user.role
-  }
-})
+    user:user,
+  },
+});
       }
     }
   }
@@ -67,7 +66,7 @@ return res.status(200).json({
       const data=users
       return successResponse(res,status,msg,data)
       
-    }er
+    }
   }
   static async deleteAllUsers(req,res){
     const users=await User.deleteMany()
@@ -75,7 +74,7 @@ return res.status(200).json({
    
   }
   static async getOneUser(req,res){
-    const id=req.params.ido
+    const id=req.params.ido;
     const user=await User.findById(id)
     if(!user){
       return errorResponse(res,401,`no user found with that id : ${id}`)

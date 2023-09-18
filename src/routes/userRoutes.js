@@ -14,8 +14,8 @@ router.post(
   Validator.inputValidator,
   userController.createUser
 );
-router.get("/", VerifyAccess,userController.getAllUsers);
-router.delete("/",VerifyAccess, userController.deleteAllUsers);
+router.get("/", VerifyAccess("admin"),userController.getAllUsers);
+router.delete("/",VerifyAccess("admin"), userController.deleteAllUsers);
 router.get("/:ido", userController.getOneUser);
 router.delete("/:id", userController.deleteOneUser);
 router.patch("/:id", userController.updateUser);
