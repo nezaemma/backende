@@ -23,13 +23,25 @@ const NewsSchema=new mongoose.Schema({
         type:Date,
         default:Date.now()
     },
+    likes:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"User",
+        }
+    ],
+    dislikes:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"User",
+        }
+    ],
     Comment:[
         {
             type:mongoose.Schema.Types.ObjectId,
-            ref:"comment"
-        }
-    ]
-})
+            ref:"comment",
+        },
+    ],
+});
 NewsSchema.pre(/^find/,function(next){
     this.populate({
         path:"Comment",
@@ -37,5 +49,5 @@ NewsSchema.pre(/^find/,function(next){
     });
     next();
 });
-const News=mongoose.model("News",NewsSchema)
-export default News
+const News=mongoose.model("News",NewsSchema);
+export default News;

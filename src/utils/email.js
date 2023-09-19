@@ -20,9 +20,9 @@ let mailOptions = {
   };
   transporter.sendMail(mailOptions, function(err,info) {
     if(err) {
-        console.err(err);
+        console.error(err);
     }else {
-    console.log(info);
+    console.info(info);
     }
   });
 };
