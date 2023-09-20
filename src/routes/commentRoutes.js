@@ -1,12 +1,12 @@
 import express from 'express';
 import CommentController from '../controller/commentController';
 import VerifyAccess from '../middlewares/verifyAccess';
-import commentController from '../controller/commentController';
+
 
 const router=express.Router()
-router.post("/:id", VerifyAccess("user"), commentController.postComment);
+router.post("/:id", VerifyAccess("user"), CommentController.postComment);
 router.get("/",CommentController.getAllcomment);
-router.delete("/:id", commentController.deleteOnecomment);
+router.delete("/:id", CommentController.deleteOnecomment);
 
 
 export default router

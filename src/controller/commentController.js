@@ -4,11 +4,11 @@ import Comment from "../model/comment";
 import News from "../model/News";
 import errorResponse from "../utils/errorResponse"
 import successResponse from "../utils/successResponse"
-class commentController{
-    static async postComment(req,res){
-        const newsIdParams=req.params.id;
-        req.body.user=req.user._id;
-        console.log("umu user wateye comment ni ...", req.user);
+class CommentController {
+    static async postComment(req, res) {
+      const blogIdParams = req.params.id;
+      req.body.user = req.user._id;
+      console.log("umu user uteyr comment ni .....", req.user);
     
     const comment=await Comment.create(req.body)
     const news=await News.findByIdAndUpdate({_id:newsIdParams},
@@ -44,4 +44,4 @@ class commentController{
     }
 }
 
-export default commentController
+export default CommentController
